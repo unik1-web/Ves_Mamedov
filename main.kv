@@ -1,0 +1,133 @@
+<WeightScaleApp>:
+    do_default_tab: False
+    
+    TabbedPanelItem:
+        text: 'Основное'
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10
+            spacing: 10
+            
+            BoxLayout:
+                size_hint_y: None
+                height: 30
+                Label:
+                    text: 'Статус:'
+                    size_hint_x: 0.3
+                Label:
+                    text: root.status
+                    bold: True
+                    size_hint_x: 0.7
+                    
+            BoxLayout:
+                size_hint_y: None
+                height: 60
+                Label:
+                    text: root.current_weight
+                    font_size: 32
+                    halign: 'center'
+                    bold: True
+                    
+            BoxLayout:
+                size_hint_y: None
+                height: 40
+                Label:
+                    text: 'Протокол:'
+                    size_hint_x: 0.3
+                Spinner:
+                    id: protocol_spinner
+                    values: root.protocols
+                    text: 'Auto'
+                    size_hint_x: 0.7
+                    
+            BoxLayout:
+                size_hint_y: None
+                height: 40
+                Label:
+                    text: 'Целевой вес:'
+                    size_hint_x: 0.3
+                TextInput:
+                    id: target_input
+                    size_hint_x: 0.5
+                Button:
+                    text: 'Установить'
+                    size_hint_x: 0.2
+                    on_press: root.target_weight = float(target_input.text) if target_input.text else 0
+                    
+            BoxLayout:
+                size_hint_y: None
+                height: 50
+                Button:
+                    id: connect_btn
+                    text: 'Подключить'
+                    on_press: root.toggle_connection()
+                Button:
+                    text: 'Тара'
+                    on_press: root.send_zero_command()
+                Button:
+                    text: 'Калибровка'
+                    on_press: root.start_calibration()
+                    
+            ScrollView:
+                TextInput:
+                    id: log_output
+                    text: root.log_text
+                    readonly: True
+                    background_color: (1, 1, 1, 1)
+                    font_size: 12
+
+    TabbedPanelItem:
+        text: 'Настройки'
+        ScrollView:
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 10
+                spacing: 10
+                row_default_height: 40
+                
+                Label:
+                    text: 'COM-порт:'
+                    halign: 'right'
+                BoxLayout:
+                    Spinner:
+                        id: port_spinner
+                        text: 'COM1'
+                    Button:
+                        text: 'Обновить'
+                        size_hint_x: None
+                        width: 100
+                        on_press: root.refresh_ports()
+                        
+                Label:
+                    text: 'Скорость (бод):'
+                    halign: 'right'
+                Spinner:
+                    id: baud_spinner
+                    text: '9600'
+                    values: ['9600', '19200', '38400', '57600']
+                    
+                Label:
+                    text: 'Биты данных:'
+                    halign: 'right'
+                Spinner:
+                    id: databits_spinner
+                    text: '8'
+                    values: ['8', '7']
+                    
+                Label:
+                    text: 'Четность:'
+                    halign: 'right'
+                Spinner:
+                    id: parity_spinner
+                    text: 'N'
+                    values: ['N', 'E', 'O']
+                    
+                Label:
+                    text: 'Стоп-биты:'
+                    halign: 'right'
+                Spinner:
+                    id: stopbits_spinner
+                    text: '1'
+                    values: ['1', '2']
