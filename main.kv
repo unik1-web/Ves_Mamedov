@@ -1,3 +1,5 @@
+#:kivy 2.0.0
+
 <WeightScaleApp>:
     do_default_tab: False
     
@@ -59,14 +61,22 @@
                 height: 50
                 Button:
                     id: connect_btn
-                    text: 'Подключить'
+                    text: 'Подключить' if not root.is_connected else 'Отключить'
                     on_press: root.toggle_connection()
                 Button:
                     text: 'Тара'
                     on_press: root.send_zero_command()
+                    disabled: not root.is_connected
                 Button:
                     text: 'Калибровка'
                     on_press: root.start_calibration()
+                    disabled: not root.is_connected
+                Button:
+                    text: 'Сохранить лог'
+                    on_press: root.save_log_to_file()
+                Button:
+                    text: 'Выход'
+                    on_press: root.exit_app()
                     
             ScrollView:
                 TextInput:
@@ -94,6 +104,7 @@
                     Spinner:
                         id: port_spinner
                         text: 'COM1'
+                        values: ['COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8']
                     Button:
                         text: 'Обновить'
                         size_hint_x: None
@@ -106,7 +117,7 @@
                 Spinner:
                     id: baud_spinner
                     text: '9600'
-                    values: ['9600', '19200', '38400', '57600']
+                    values: ['9600', '4800', '2400', '1200', '19200', '38400', '57600', '115200']
                     
                 Label:
                     text: 'Биты данных:'
@@ -114,15 +125,15 @@
                 Spinner:
                     id: databits_spinner
                     text: '8'
-                    values: ['8', '7']
+                    values: ['5', '6', '7', '8']
                     
                 Label:
                     text: 'Четность:'
                     halign: 'right'
                 Spinner:
                     id: parity_spinner
-                    text: 'N'
-                    values: ['N', 'E', 'O']
+                    text: 'No'
+                    values: ['No', 'Even', 'Odd', 'Space', 'Mark']
                     
                 Label:
                     text: 'Стоп-биты:'
@@ -130,4 +141,4 @@
                 Spinner:
                     id: stopbits_spinner
                     text: '1'
-                    values: ['1', '2']
+                    values: ['1', '1.5', '2']
